@@ -521,8 +521,17 @@ local SellAllButton = FishUtilitiesGroup:AddButton({
 
 
 local appraiseCount = 1
-local AppraiseCountTextBox = FishUtilitiesGroup:AddTextBox({
-		
+
+FishUtilitiesGroup:AddSlider('appraiseTimes', {
+    Text = 'Amount Of Times You Want The Fish To Be Appraised',
+    Default = 1,
+    Min = 1,
+    Max = 1000,
+    Rounding = 1,
+
+    Callback = function(Value)
+       appraiseCount = Value
+    end
 })
 
 local AppraiseFishButton = FishUtilitiesGroup:AddButton({
