@@ -515,10 +515,13 @@ local SellAllButton = FishUtilitiesGroup:AddButton({
     Func = function()
         Workspace:WaitForChild("world"):WaitForChild("npcs"):WaitForChild("Marc Merchant"):WaitForChild("merchant"):WaitForChild("sellall"):InvokeServer()
     end,
-    DoubleClick = false,
     Tooltip = 'Sells all your fish'
 })
 
+if not game.workspace.world.npcs:FindFirstChild("Appraiser") then
+    warn("Appraiser Is Not Loaded In Yet! Go To Moosewood Or Appraiser Features Will Not Work!")
+    Library:Notify("Appraiser Is Not Loaded In Yet! Go To Moosewood Or Appraiser Features Will Not Work!")
+end
 
 local appraiseCount = 1
 
@@ -527,7 +530,7 @@ FishUtilitiesGroup:AddSlider('appraiseTimes', {
     Default = 1,
     Min = 1,
     Max = 1000,
-    Rounding = 1,
+    Rounding = 0,
 
     Callback = function(Value)
        appraiseCount = Value
