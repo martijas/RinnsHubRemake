@@ -320,7 +320,7 @@ local LightingToggleButton = LightingGroup:AddButton({
     Func = function()
         if LightingStatus == true then
             for _, v in pairs(game.Lighting:GetDescendants()) do
-                if v.Enabled = true then
+                if v:IsA("Sky") == false and v.Enabled == true then
                     v.Enabled = false
                     v:SetAttribute("NeedsToBeEnabled", true)
                 end
@@ -519,13 +519,25 @@ local SellAllButton = FishUtilitiesGroup:AddButton({
     Tooltip = 'Sells all your fish'
 })
 
-local SellAllButton = FishUtilitiesGroup:AddButton({
-    Text = 'Appraise fish 🐟 (450C$)',
+
+local appraiseCount = 1
+local AppraiseCountTextBox = FishUtilitiesGroup:AddTextBox({
+		
+})
+
+local AppraiseFishButton = FishUtilitiesGroup:AddButton({
+    Text = 'Appraise fish 🐟',
     Func = function()
-        Workspace:WaitForChild("world"):WaitForChild("npcs"):WaitForChild("Appraiser"):WaitForChild("appraiser"):WaitForChild("appraise"):InvokeServer()
+	local appraiseInvokable = game.workspace.world.npcs.Appraiser.appraiser.appraise
+	for i = 1, appraiseCount do
+		task.spawn(function()
+			task.wait(0.01)
+			appraiseInvokable:InvokeServer()
+		end)
+	end
     end,
     DoubleClick = false,
-    Tooltip = 'Appraises the fish you are holding'
+    Tooltip = 'Appraises the fish you are holding x amount of times'
 })
 
 --[[
