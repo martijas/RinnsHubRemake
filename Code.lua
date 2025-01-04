@@ -58,7 +58,9 @@ local itemSpots = {
     Long_Rod = CFrame.new(485.695038, 171.656326, 145.746109, -0.630167365, -0.776459217, -5.33461571e-06, 5.33461571e-06, -1.12056732e-05, 1, -0.776459217, 0.630167365, 1.12056732e-05),
     Lucky_Rod = CFrame.new(446.085999, 148.253006, 222.160004, 0.974526405, -0.22305499, 0.0233404674, 0.196993902, 0.901088715, 0.386306256, -0.107199371, -0.371867687, 0.922075212),
     Plastic_Rod = CFrame.new(454.425385, 148.169739, 229.172424, 0.951755166, 0.0709736273, -0.298537821, -3.42726707e-07, 0.972884834, 0.231290117, 0.306858391, -0.220131472, 0.925948203),
-    Training_Rod = CFrame.new(457.693848, 148.357529, 230.414307, 1, -0, 0, 0, 0.975410998, 0.220393807, -0, -0.220393807, 0.975410998)
+    Training_Rod = CFrame.new(457.693848, 148.357529, 230.414307, 1, -0, 0, 0, 0.975410998, 0.220393807, -0, -0.220393807, 0.975410998),
+    Sundial_Totem = CFrame.new(),
+    Aurora_Totem = CFrame.new(),
 }
 
 local fisktable = {}
@@ -78,6 +80,7 @@ local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
 local LocalCharacter = LocalPlayer.Character
+local AFKTAG = LocalCharacter
 local HumanoidRootPart = LocalCharacter:FindFirstChild("HumanoidRootPart")
 local ActiveFolder = Workspace:FindFirstChild("active")
 local FishingZonesFolder = Workspace:FindFirstChild("zones"):WaitForChild("fishing")
@@ -89,6 +92,11 @@ local WaitForSomeone = RenderStepped.Wait
 local Debug = function()
     print(debug.info(2, "l"))
 end
+
+local updateEverything = coroutine.create(function()
+	
+end)
+
 
 -- Varbiables
 
@@ -526,7 +534,7 @@ end
 local appraiseCount = 1
 
 FishUtilitiesGroup:AddSlider('appraiseTimes', {
-    Text = 'Amount Of Times You Want The Fish To Be Appraised',
+    Text = '# of appraisals',
     Default = 1,
     Min = 1,
     Max = 1000,
@@ -538,18 +546,18 @@ FishUtilitiesGroup:AddSlider('appraiseTimes', {
 })
 
 local AppraiseFishButton = FishUtilitiesGroup:AddButton({
-    Text = 'Appraise fish 🐟',
+    Text = 'Appraise fish '..appraiseCount..' Times 🐟',
     Func = function()
 	local appraiseInvokable = game.workspace.world.npcs.Appraiser.appraiser.appraise
 	for i = 1, appraiseCount do
 		task.spawn(function()
-			task.wait(0.01)
+			task.wait(0.03)
 			appraiseInvokable:InvokeServer()
 		end)
 	end
     end,
     DoubleClick = false,
-    Tooltip = 'Appraises the fish you are holding x amount of times'
+    Tooltip = 'Appraises the fish you are holding '..appraiseCount..' times'
 })
 
 --[[
@@ -673,7 +681,7 @@ TeleportsGroup:AddDropdown('NPCTeleport', {
 TeleportsGroup:AddDropdown('ItemTeleport', {
     Text = 'Teleport to item',
     Tooltip = 'Teleport to a rod',
-    Values = {"Bait_Crate", "Carbon_Rod", "Crab_Cage", "Fast_Rod", "Flimsy_Rod", "GPS", "Long_Rod", "Lucky_Rod", "Plastic_Rod", "Training_Rod"},
+    Values = {"Bait_Crate", "Carbon_Rod", "Crab_Cage", "Fast_Rod", "Flimsy_Rod", "GPS", "Long_Rod", "Lucky_Rod", "Plastic_Rod", "Training_Rod", "Sundial_Totem", "Aurora_Totem"},
     Default = '',
   
     Callback = function(Value)
