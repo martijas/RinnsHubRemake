@@ -1,3 +1,4 @@
+
 -- Made by kylosilly and netpa :3 (space hub pls dont skid thanks thier hwid and keys list: https://pastebin.com/vCwfFmP0)
 -- remake made by martijas
 local repo = 'https://raw.githubusercontent.com/KINGHUB01/Gui/main/'
@@ -122,30 +123,31 @@ local LightingStatus = true
 
 autoreelandshakeConnection = PlayerGUI.ChildAdded:Connect(function(GUI)
     if GUI:IsA("ScreenGui") and GUI.Name == "shakeui" then
-        if GUI:FindFirstChild("safezone") ~= nil then
-            GUI.safezone.ChildAdded:Connect(function(child)
+        local safezone = GUI:WaitForChild("safezone", 5) -- Waits for "safezone" to appear with a timeout.
+        if safezone then
+            safezone.ChildAdded:Connect(function(child)
                 if child:IsA("ImageButton") and child.Name == "button" then
-                    if autoShake == true then
+                    if autoShake then
                         task.wait(autoShakeDelay)
-                        if child.Visible == true then
+                        if child.Visible then
                             if autoShakeMethod == "ClickEvent" then
                                 local pos = child.AbsolutePosition
                                 local size = child.AbsoluteSize
                                 VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, true, LocalPlayer, 0)
                                 VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, false, LocalPlayer, 0)
-                            --[[elseif autoShakeMethod == "firesignal" then
-                                firesignal(child.MouseButton1Click)]]
                             elseif autoShakeMethod == "KeyCodeEvent" then
-                                while WaitForSomeone(RenderStepped) do
-                                    if autoShake and GUI.safezone:FindFirstChild(child.Name) ~= nil then
-                                        task.wait()
-                                        pcall(function()
+                                while RenderStepped:Wait() do
+                                    if autoShake and safezone:FindFirstChild(child.Name) then
+                                        local success, err = pcall(function()
                                             GuiService.SelectedObject = child
                                             if GuiService.SelectedObject == child then
                                                 VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
                                                 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
                                             end
                                         end)
+                                        if not success then
+                                            warn("Error in KeyCodeEvent: " .. tostring(err))
+                                        end
                                     else
                                         GuiService.SelectedObject = nil
                                         break
@@ -156,8 +158,12 @@ autoreelandshakeConnection = PlayerGUI.ChildAdded:Connect(function(GUI)
                     end
                 end
             end)
+        else
+            warn("Safezone not found in 'shakeui' GUI.")
         end
     end
+end)
+
     if GUI:IsA("ScreenGui") and GUI.Name == "reel" then
         if autoReel and ReplicatedStorage:WaitForChild("events"):WaitForChild("reelfinished") ~= nil then
             repeat task.wait(autoReelDelay) ReplicatedStorage.events.reelfinished:FireServer(100, false) until GUI == nil
