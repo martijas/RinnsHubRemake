@@ -8,7 +8,7 @@ local ThemeManager = loadstring(game:HttpGet(repo ..'Gui%20Lib%20%5BThemeManager
 local SaveManager = loadstring(game:HttpGet(repo ..'Gui%20Lib%20%5BSaveManager%5D'))()
 
 local Window = Library:CreateWindow({
-    Title = 'Fisch V1.2.3 (BETA)',
+    Title = 'Fisch V1.2.4 REMAKE',
     Center = true,
     AutoShow = true,
     TabPadding = 8,
@@ -170,7 +170,6 @@ autoreelandshakeConnection = PlayerGUI.ChildAdded:Connect(function(GUI)
             warn("'safezone' not found in 'shakeui' GUI.")
         end
     end
-end)
 
 
     if GUI:IsA("ScreenGui") and GUI.Name == "reel" then
@@ -891,19 +890,3 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 ThemeManager:ApplyToTab(Tabs.Settings)
 
 SaveManager:LoadAutoloadConfig()
-
-local Version = "1.2.3"
-
-task.spawn(function()
-    local success, LatestVer = pcall(function()
-        local version = game:HttpGet("https://raw.githubusercontent.com/kylosilly/femboyware/refs/heads/main/fischver")
-        return HttpService:JSONDecode(version)
-    end)
-    
-    if success then
-        if Version ~= LatestVer then
-            Library:Notify("You are using an outdated version of the Fisch script.")
-            Library:Notify("Join our fisch discord server to get the new script.")
-        end
-    end
-end)
